@@ -80,9 +80,13 @@ resource "google_compute_instance" "shibl-vm" {
   metadata_startup_script = <<-EOF
     #!/bin/bash
     apt-get update
-    apt-get install -y git docker.io
-    curl -sSL https://sdk.cloud.google.com/ | bash
-    echo "export PATH=$PATH:/root/google-cloud-sdk/bin" >> /root/.bashrc
+    apt-get install -y docker.io
+    sudo usermod -aG docker $USER
+    newgrp docker
+    echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | \
+    sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    sudo apt-get update
+    sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
     chmod +x kubectl
     mv kubectl /usr/local/bin/

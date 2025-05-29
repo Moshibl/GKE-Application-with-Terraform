@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: us-central1-docker.pkg.dev/level-agent-460100-t6/shibl-gke-repo/redis:6
+        image: us-central1-docker.pkg.dev/level-agent-460100-t6/shibl-gke-repo/my-redis
         ports:
         - containerPort: 6379
 ---
