@@ -221,6 +221,21 @@ resource "google_compute_firewall" "allow_ssh_management" {
   }
 }
 
+resource "google_compute_firewall" "deny_egress_from_restricted" {
+  name    = "deny-egress-restricted-subnet"
+  network = google_compute_network.vpc_network.name
+
+  direction = "EGRESS"
+  priority  = 100
+
+  destination_ranges = ["0.0.0.0/0"]
+  target_tags        = ["gke-node"]
+
+  deny {
+    protocol = "all"
+  }
+}
+
 resource "google_compute_firewall" "allow_health_checks" {
   name    = "allow-gcp-health-checks"
   network = google_compute_network.vpc_network.name
